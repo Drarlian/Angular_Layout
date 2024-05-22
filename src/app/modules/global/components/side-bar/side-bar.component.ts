@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
-import { SideBarServiceService } from '../../../services/side-bar/side-bar-service.service';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { Router } from '@angular/router';
+import { SideBarServiceService } from '../../services/side-bar/side-bar-service.service';
 
 @Component({
   selector: 'app-side-bar',

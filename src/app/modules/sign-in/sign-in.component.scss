@@ -1,0 +1,61 @@
+.sign-in-content{
+    display: flex;
+    height: 100vh;
+
+    .left-content{
+        background-color: pink;
+        flex: 1;
+    }
+
+    .right-content{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+
+        width: 30vw;
+        padding: 10px;
+        background-color: red;
+        
+        *{
+            font-size: 1.1em;
+        }
+
+        .title-content{
+            background-color: yellow;
+        }
+
+        form{
+            .input-content{
+                display: flex;
+                flex-direction: column;
+                margin-bottom: 15px;
+                
+                input{
+                    padding: 10px;
+                    border-radius: 5px;
+                    border-style: none;
+                    outline: none;
+                }
+            }
+
+            .button-content{
+                display: flex;
+                justify-content: center;
+                align-items: center;
+
+                button{
+                    padding: 5px;
+                    border-radius: 5px;
+                    border-style: none;
+                    transition: all ease 0.8s;
+
+                    &:hover{
+                        cursor: pointer;
+                        opacity: 0.96;
+                    }
+                }
+            }
+        }
+    }
+}
