@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { LayoutComponent } from '../global/components/layout/layout.component';
-import { UsersServiceService } from '../global/services/users-service/users-service.service';
+import { UsersService } from '../../services/users-service/users.service';
 
 @Component({
   selector: 'app-home',
@@ -10,12 +10,12 @@ import { UsersServiceService } from '../global/services/users-service/users-serv
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent {
-  constructor (private users: UsersServiceService) {}
+  usersService = inject(UsersService)
 
   allMessage! : any
 
   ngOnInit() {
-    this.users.getAllMessages().subscribe((e: any) => this.allMessage = e)
+    // this.users.getAllMessages().subscribe((e: any) => this.allMessage = e)
   }
   
 }

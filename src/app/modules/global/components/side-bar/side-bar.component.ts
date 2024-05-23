@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { Router } from '@angular/router';
 import { SideBarServiceService } from '../../services/side-bar/side-bar-service.service';
+import { UsersService } from '../../../../services/users-service/users.service';
 
 @Component({
   selector: 'app-side-bar',
@@ -12,7 +13,7 @@ import { SideBarServiceService } from '../../services/side-bar/side-bar-service.
   styleUrls: ['./side-bar.component.scss']
 })
 export class SideBarComponent {
-  constructor(private sideBarServiceService: SideBarServiceService, private router: Router) {}
+  constructor(private sideBarServiceService: SideBarServiceService, private router: Router, private userServices: UsersService) {}
 
   isOpen!: boolean;
 
@@ -29,5 +30,9 @@ export class SideBarComponent {
   changePage(rota: string) {
     this.toggleSideBar();
     this.router.navigate([rota]);
+  }
+
+  logout(){
+    this.userServices.logOut();
   }
 }

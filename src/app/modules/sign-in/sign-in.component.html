@@ -1,23 +1,30 @@
 <div class="sign-in-content">
     <div class="left-content">
-        Imagem
+        <img class="login-image" src="../../../assets/login-image.png" />
     </div>
     <div class="right-content">
         <div class="title-content">
+            <h1>Titulo</h1>
             <h2>CashBack</h2>
         </div>
         <form>
             <div class="input-content">
                 <label>Usuário</label>
-                <input placeholder="Usuário" />
+                <input [(ngModel)]="username" name="username" placeholder="Nome de usuário" />
             </div>
             <div class="input-content">
                 <label>Senha</label>
-                <input placeholder="Senha" />
+                <input [(ngModel)]="password" name="password" placeholder="Senha" type="password" />
+            </div>
+            <div class="forget-password">
+                <a href="google.com">Esqueceu sua senha?</a>
             </div>
             <div class="button-content">
-                <button>Entrar</button>
+                <button (click)="signIn()">Entrar</button>
             </div>
         </form>
+        <div class="create-content">
+            <button>Criar uma conta</button>
+        </div>
     </div>
 </div>
