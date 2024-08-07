@@ -1,0 +1,63 @@
+<div class="all-content">
+  <div class="left-content">
+    <div class="img-content">
+      <img src="../../../../../assets/images/login-img-1.svg">
+      <div class="div-theme-button">
+        <app-button-theme></app-button-theme>
+      </div>
+    </div>
+    </div>
+    @if (isLoading){
+      <div class="loading-signin">
+        <app-loading />
+      </div>
+    }
+    @if (!isLoading){
+      <div class="right-content">
+        <p-toast />
+        <div class="title-login">
+          <h1>NOME EMPRESA</h1>
+          <h2>Basic Template</h2>
+        </div>
+        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="container-login" >
+          <div class="form-element">
+            <p-inputGroup>
+              <p-inputGroupAddon>
+                <i class='pi pi-user'></i>
+              </p-inputGroupAddon>
+              <p-floatLabel class="input-group">
+                <!-- <input pInputText id="username" formControlName="username" type="text" /> -->
+                <input pInputText id="username" formControlName="username" type="text" class="input-custom" [ngClass]="{'input-invalid': isInvalid}" />
+                <label for="username">Usuário</label>
+              </p-floatLabel>
+            </p-inputGroup>
+          </div>
+          <div class="form-element">
+            <p-inputGroup>
+              <p-inputGroupAddon>
+                <i class='pi pi-lock'></i>
+              </p-inputGroupAddon>
+              <p-floatLabel class="input-group">
+                <input pInputText id="password" formControlName="password" type="password" class="input-custom" [ngClass]="{'input-invalid': isInvalid}" />
+                <!-- <input pInputText id="password" formControlName="password" type="password" class="ng-invalid ng-dirty" /> -->
+                <label for="password">Senha</label>
+              </p-floatLabel>
+            </p-inputGroup>
+          </div>
+          <div class="form-element">
+            <button
+              pButton
+              pRipple
+              label="Entrar"
+              type="submit"
+              class="p-button-success"
+            >
+            </button>
+            <div class="forget-container">
+              <p>Esqueceu sua senha? <a (click)="navigateTo('forget-password')">Clique Aqui</a></p>
+            </div>
+          </div>
+        </form>
+      </div>
+    }
+</div>

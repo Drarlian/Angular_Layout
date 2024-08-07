@@ -1,49 +1,42 @@
-.header{
-    background-color: #053;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    height: 90px;
+.p-toolbar {
+  position: sticky;
+  position: -webkit-sticky; // Needed for Safari browsers.
+  z-index: 10000; // This prevents elements to be seen through the toolbar.
+  top: 0; // Required for "position: sticky" to take effect.
+}
 
-    .left-content{
-        padding-left: 7px;
+.notification{
+  font-size: 1.3rem;
+  cursor: pointer;
+
+  background-color: transparent;
+  border: none;
+
+  &::after {
+    content: '';
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: rgb(231, 43, 43);
+
+    position: absolute;
+
+    top: -4px;
+    right: -1px;
+    // border: 2px solid transparent;
+}
+
+  animation: balancar 2.5s ease-in-out infinite;
+
+  @keyframes balancar {
+    0% {
+        transform: rotate(12deg);
     }
-
-    .right-content{
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        padding-right: 7px;
-        gap: 0.6rem;
-
-        .infos{
-            display: flex;
-            flex-direction: column;
-            color: white;
-            font-size: 1.3em;
-
-            :nth-child(2){
-                display: flex;
-                align-items: end;
-                justify-content: end;
-                font-size: 0.9em;
-                color: #7BEC91;
-            }
-        }
-
-        .perfil-picture{
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            
-            .perfil-img{
-                width: 75px;
-                height: 75px;
-                padding: 3px;
-
-                border: 3.5px solid #7BEC91;
-                border-radius: 50%;
-            }
-        }
+    50% {
+        transform: rotate(-12deg);
     }
+    100% {
+          transform: rotate(12deg);
+    }
+  }
 }

@@ -1,14 +1,33 @@
-<div class="header">
-    <div class="left-content">
-        <button (click)="toggleSideBar()">|||</button>
-    </div>
-    <div class="right-content">
-        <div class="infos">
-            <div>{{userInfos.first_name}} {{userInfos.last_name}}</div>
-            <div>{{userInfos.role}}</div>
+<div class="card">
+  <p-toolbar
+  styleClass="shadow-2"
+  [hidden]="false"
+  >
+    <ng-template pTemplate="start">
+      <app-sidebar></app-sidebar>
+    </ng-template>
+
+    <ng-template pTemplate="end">
+        <div (click)="openNotification()" class="flex justify-content-center align-items-center mr-4 cursor-pointer">
+          <span class="pi pi-bell notification"></span>
         </div>
-        <div class="perfil-picture">
-            <img class="perfil-img" src="https://media.licdn.com/dms/image/D4D03AQHgjBbOGLsCig/profile-displayphoto-shrink_200_200/0/1678555371145?e=1721865600&v=beta&t=Wb1abzckow8bZLkMjur90Akp6XH_-OomIdD5xYtWbfc" />
+        <div class="flex align-items-center justify-content-center gap-2">
+          <div class="flex flex-column">
+            <h3 class="font-medium">{{userData?.user?.name}} {{userData?.user?.lastName}}</h3>
+            <span class="text-sm" [ngStyle]="{color: '#00B0FF'}" class="font-semibold">{{userData?.user?.access?.role}}</span>
+          </div>
+
+        <p-avatar
+          image='https://avatars.githubusercontent.com/u/42438006?v=4'
+          shape="circle"
+          [size]="'large'"
+        />
+        <!-- <p-avatar
+          image={{userData?.user?.avatar}}
+          shape="circle"
+          [size]="'large'"
+        /> -->
         </div>
-    </div>
+    </ng-template>
+  </p-toolbar>
 </div>

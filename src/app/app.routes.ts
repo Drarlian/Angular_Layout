@@ -1,20 +1,24 @@
 import { Routes } from '@angular/router';
-import { userGuard } from './auth/auth-user/user.guard';
+import { AuthService } from './modules/global/services/auth/auth.service';
 
 export const routes: Routes = [
-    {
-        path: '',
-        redirectTo: 'sign-in',
-        pathMatch: 'full'
-    },
-    {
-        path: 'home',
-        loadComponent: () => import('./modules/home/home.component').then(c => c.HomeComponent),
-        canActivate: [userGuard]
-    },
-    {
-        path: 'sign-in',
-        loadComponent: () => import('./modules/sign-in/sign-in.component').then(c => c.SignInComponent),
-        canActivate: [userGuard]
-    }
+  {
+    path: '',
+    redirectTo: 'home',
+    pathMatch: 'full'
+  },
+  {
+    path: 'signin',
+    loadComponent: () => import('./modules/global/pages/signin/signin.component').then((m) => m.SigninComponent),
+    canActivate: [AuthService]
+  },
+  {
+    path: 'home',
+    loadComponent: () => import('./modules/global/pages/home/home.component').then((m) => m.HomeComponent),
+    canActivate: [AuthService]
+  },
+  {
+    path: '**',
+    loadComponent: () => import('./modules/global/pages/not-found/not-found.component').then((m) => m.NotFoundComponent)
+  }
 ];

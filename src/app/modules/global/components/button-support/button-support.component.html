@@ -1,0 +1,68 @@
+<div class="shadow-div" [ngStyle]="{'display': isOpen ? 'inline': 'none', 'opacity': isOpen ? '1': '0'}" (click)="toggleOpen()"></div>
+<div class="card flex justify-content-center button-support">
+    <!-- <p-button (onClick)="op.toggle($event)" icon="pi pi-share-alt" label="Share" /> -->
+    <p-button (onClick)="toggleOpen()" icon="pi pi-question-circle" class="button-open" />
+</div>
+@if (isOpen){
+  <div class="card m-1 dialog-support">
+    <div class="col-12">
+      <p-card
+        styleClass="shadow-8 border-radius"
+        header="Fale Conosco"
+        class="card-container custom-card"
+      >
+      @if (isLoading){
+        <div class="button-support-loading">
+          <app-loading />
+        </div>
+      } @else{
+        <div class="flex flex-column gap-3">
+          <div class="flex gap-3 justify-content-center">
+            <p-button (click)="openInputArea('problem')" icon="pi pi-question-circle" label="Ajuda" />
+            <p-button (click)="openInputArea('sugestion')" icon="pi pi-comments" label="Sugestão" />
+          </div>
+          @if (isClicked){
+            <div class="flex flex-column gap-5 mt-3">
+              <p-floatLabel>
+                <input pInputText id="email" [(ngModel)]="userEmail" class="w-full" />
+                <label for="email">Seu Email</label>
+              </p-floatLabel>
+              @if (isProblem){
+                  <p-floatLabel>
+                      <textarea
+                          id="problem"
+                          rows="5" cols="30"
+                          class="w-full"
+                          [(ngModel)]="userProblem"
+                          pInputTextarea
+                          [autoResize]="true"
+                      >
+                      </textarea>
+                      <label for="problem">Descrição do problema</label>
+                  </p-floatLabel>
+              }
+              @if (isSugestion){
+                <p-floatLabel>
+                  <textarea
+                    id="sugestion"
+                    rows="5" cols="30"
+                    class="w-full"
+                    [(ngModel)]="userSugestion"
+                    pInputTextarea
+                    [autoResize]="true"
+                  >
+                  </textarea>
+                  <label for="sugestion">Descrição da sugestão</label>
+                </p-floatLabel>
+              }
+            </div>
+            <div class="flex justify-content-center">
+              <p-button (click)="submitEmail()" icon="pi pi-check" label="Enviar" />
+            </div>
+          }
+        </div>
+      }
+      </p-card>
+    </div>
+  </div>
+}

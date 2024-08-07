@@ -1,0 +1,7 @@
+<div class="shadow-div" [ngStyle]="{'display': visible ? 'inline': 'none', 'opacity': visible ? '1': '0'}" (click)="customClose()"></div>
+<p-dialog header="Notificação do Sistema" class="main-div custom-dialog" [modal]="false" [(visible)]="visible" [style]="{ width: '35rem'}" (onHide)="customClose()">
+  <!-- <h3>Alerta <span class="pi pi-exclamation-triangle"></span></h3> -->
+  <p class="notification-text">Estamos em período de testes do módulo de <span class="personalized">Usuários</span>.</p>
+  <p class="notification-text">Caso tenha alguma sugestão de <span class="personalized">melhoria</span> para esse módulo, por favor entre em contato através do <span class="personalized">botão de sugestão</span> no canto inferior direito do página.</p>
+  <!-- <p class="notification-text">Devido a alterações nos dados recebidos da transportadora as informações de <span class="personalized">Ocorrência</span> e de <span class="personalized">SLA</span> foram reiniciadas.</p> -->
+</p-dialog>

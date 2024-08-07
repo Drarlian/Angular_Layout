@@ -1,0 +1,44 @@
+.close-icon{
+    button{
+        background-color: transparent;
+        border-radius: 15px;
+        border-style: none;
+        cursor: pointer;
+
+        :nth-child(1){
+            padding: 2px;
+        }
+    }
+}
+
+.container-bottom{
+    // background-color: red;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-left: 20px;
+    padding-right: 20px;
+    margin-bottom: 10px;
+
+    button{
+        background: transparent;
+        border: none;
+        cursor: pointer;
+    }
+}
+
+.logo-img{
+    width: 15%;
+    height: auto;
+}
+
+::-webkit-scrollbar {
+    width: 4px;
+}
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+::-webkit-scrollbar-thumb {
+    background: #AAA;
+    border-radius: 5px;
+}

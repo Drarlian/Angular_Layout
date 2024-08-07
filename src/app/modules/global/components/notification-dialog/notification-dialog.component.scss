@@ -1,0 +1,42 @@
+.main-div{
+  z-index: 999 !important;
+}
+
+.shadow-div{
+  position: fixed;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+
+  background: rgba(0, 0, 0, 0.4);
+
+  z-index: 99;
+}
+
+.notification-text{
+  font-size: 1rem;;
+
+  .personalized{
+    color: #00B0FF;
+    font-weight: 700;
+  }
+}
+
+.custom-dialog ::ng-deep .p-dialog-title {
+  color: #00B0FF;
+  font-size: 1.8rem;
+  animation: pulse 1.6s infinite;
+
+  @keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.02);
+    }
+    100% {
+        transform: scale(1);
+    }
+  }
+}

@@ -1,0 +1,52 @@
+.button-support{
+    // background-color: red;
+    box-sizing: border-box;
+    // display: flex;
+    // justify-content: center;
+    // align-items: center;
+    border-radius: 50%;
+    bottom: 0;
+    right: 0;
+    position: fixed;
+    // width: 70px;
+    // padding: 10px;
+    margin-right: 10px !important;
+    margin-bottom: 15px !important;
+
+    z-index: 9999;
+
+    .button-open{
+        // display: flex;
+        // justify-content: center;
+        // align-items: center;
+        border-radius: 50%;
+        overflow: hidden;
+    }
+}
+
+.dialog-support{
+    display: block;
+    position: fixed;
+    bottom: 55px;
+    z-index: 1000000;
+    right: 20px !important;
+    direction: ltr;
+    overflow: visible;
+
+    transition: all ease 1s;
+}
+
+.shadow-div{
+    position: fixed;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+
+    z-index: 99;
+}
+
+.custom-card ::ng-deep .p-card-title {
+  color: #00B0FF;
+  font-size: 1.8rem;
+}
