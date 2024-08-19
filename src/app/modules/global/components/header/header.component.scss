@@ -26,7 +26,9 @@
     // border: 2px solid transparent;
 }
 
-  animation: balancar 2.5s ease-in-out infinite;
+  &{
+    animation: balancar 2.5s ease-in-out infinite;
+  }
 
   @keyframes balancar {
     0% {
