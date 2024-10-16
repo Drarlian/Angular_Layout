@@ -1,5 +1,6 @@
-<div class="">
-  <p-sidebar #sidebarRef [(visible)]="sidebarVisible">
+<div class="shadow-div" [ngStyle]="{'display': sidebarVisible ? 'inline': 'none', 'opacity': sidebarVisible ? '1': '0'}" (click)="closeShadow()"></div>
+<div class="main-div">
+  <p-sidebar #sidebarRef [(visible)]="sidebarVisible" [modal]=false>
     <ng-template pTemplate="headless">
       <div class="flex flex-column h-full">
         <div class="flex align-items-center justify-content-between px-4 pt-3 flex-shrink-0">

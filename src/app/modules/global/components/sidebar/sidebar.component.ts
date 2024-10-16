@@ -31,6 +31,10 @@ export class SidebarComponent implements OnInit {
 
   sidebarVisible: boolean = false;
 
+  closeShadow(){
+    this.sidebarVisible = false;
+  }
+
   navigateTo(route: string){
     this.sidebarVisible = false;
     this.router.navigate([route]);
