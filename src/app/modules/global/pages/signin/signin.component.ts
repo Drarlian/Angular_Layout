@@ -1,12 +1,9 @@
 import { Component, OnInit, inject } from '@angular/core';
-import { TabMenuModule } from 'primeng/tabmenu';
-import { HeaderComponent } from '../../components/header/header.component';
 import { CardModule } from 'primeng/card';
 import { InputTextModule } from 'primeng/inputtext';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { ButtonModule } from 'primeng/button';
-import { PasswordModule } from 'primeng/password';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { MessageService } from 'primeng/api';
@@ -21,7 +18,7 @@ import { RippleModule } from 'primeng/ripple';
 @Component({
   selector: 'app-signin',
   standalone: true,
-  imports: [CardModule, TabMenuModule, HeaderComponent, FormsModule, InputTextModule, FloatLabelModule, ButtonModule, PasswordModule, CommonModule, ReactiveFormsModule, ToastModule, LoadingComponent, InputGroupModule, InputGroupAddonModule, ButtonThemeComponent, RippleModule],
+  imports: [CardModule, FormsModule, InputTextModule, FloatLabelModule, ButtonModule, CommonModule, ReactiveFormsModule, ToastModule, LoadingComponent, InputGroupModule, InputGroupAddonModule, ButtonThemeComponent, RippleModule],
   templateUrl: './signin.component.html',
   styleUrl: './signin.component.scss',
   providers: [MessageService]
@@ -36,6 +33,8 @@ export class SigninComponent implements OnInit {
   loginForm!: FormGroup;
 
   isInvalid: boolean = false;
+
+  visiblePassword: boolean = false;
 
   ngOnInit(): void {
     this.loginForm = new FormGroup({
@@ -64,5 +63,9 @@ export class SigninComponent implements OnInit {
 
   navigateTo(route: string){
     this.router.navigate([route]);
+  }
+
+  togglePassword(){
+    this.visiblePassword = !this.visiblePassword;
   }
 }

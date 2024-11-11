@@ -1,7 +1,7 @@
 <div class="shadow-div" [ngStyle]="{'display': isOpen ? 'inline': 'none', 'opacity': isOpen ? '1': '0'}" (click)="toggleOpen()"></div>
 <div class="card flex justify-content-center button-support">
     <!-- <p-button (onClick)="op.toggle($event)" icon="pi pi-share-alt" label="Share" /> -->
-    <p-button (onClick)="toggleOpen()" icon="pi pi-question-circle" class="button-open" />
+    <p-button (onClick)="toggleOpen()" icon="pi pi-question-circle" class="button-open" rounded="true" [style]="{backgroundColor: 'var(--primary-color)', color: 'var(--secondary-color)', border: 'none'}" />
 </div>
 @if (isOpen){
   <div class="card m-1 dialog-support">

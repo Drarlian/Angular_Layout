@@ -18,13 +18,13 @@
   font-size: 1rem;;
 
   .personalized{
-    color: #00B0FF;
+    color: var(--primary-color);
     font-weight: 700;
   }
 }
 
 .custom-dialog ::ng-deep .p-dialog-title {
-  color: #00B0FF;
+  color: var(--primary-color);
   font-size: 1.8rem;
   animation: pulse 1.6s infinite;
 

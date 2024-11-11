@@ -46,7 +46,7 @@ export class UsersService {
   }
 
   signin(informations: ISigninRequest){
-    if (informations.username == 'Teste' && informations.password == 'SambaMaster123456'){
+    if (informations.username == 'admin' && informations.password == 'admin'){
       this.user.next(mockUser)
       this.localStorageService.setLocalStorage('USER-BASIC-TEMPLATE', mockUser, false, false);
       return true

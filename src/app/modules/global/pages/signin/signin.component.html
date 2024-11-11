@@ -20,6 +20,13 @@
           <h2>Basic Template</h2>
         </div>
         <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="container-login" >
+          <div class="flex justify-content-end">
+            @if (visiblePassword){
+              <span (click)="togglePassword()" class="pi pi-eye-slash mr-2 cursor-pointer"></span>
+            } @else {
+              <span (click)="togglePassword()" class="pi pi-eye mr-2 cursor-pointer"></span>
+            }
+          </div>
           <div class="form-element">
             <p-inputGroup>
               <p-inputGroupAddon>
@@ -38,7 +45,7 @@
                 <i class='pi pi-lock'></i>
               </p-inputGroupAddon>
               <p-floatLabel class="input-group">
-                <input pInputText id="password" formControlName="password" type="password" class="input-custom" [ngClass]="{'input-invalid': isInvalid}" />
+                <input pInputText id="password" formControlName="password" [type]="visiblePassword ? 'text' : 'password'" class="input-custom" [ngClass]="{'input-invalid': isInvalid}" />
                 <!-- <input pInputText id="password" formControlName="password" type="password" class="ng-invalid ng-dirty" /> -->
                 <label for="password">Senha</label>
               </p-floatLabel>

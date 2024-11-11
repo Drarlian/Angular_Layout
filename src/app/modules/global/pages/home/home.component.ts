@@ -10,7 +10,7 @@ import { SidebarComponent } from '../../components/sidebar/sidebar.component';
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CardModule, ButtonModule, CommonModule, SidebarComponent, HeaderComponent],
+  imports: [CardModule, ButtonModule, CommonModule, HeaderComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })

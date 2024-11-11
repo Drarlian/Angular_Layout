@@ -42,20 +42,3 @@
     background: #AAA;
     border-radius: 5px;
 }
-
-// SOLUÇÃO ALTERNATIVA PARA O PROBLEMA NA SIDEBAR:
-.shadow-div{
-  position: fixed;
-  left: 0;
-  top: 0;
-  right: 0;
-  bottom: 0;
-
-  background: rgba(0, 0, 0, 0.5);
-
-  z-index: 99;
-}
-
-.main-div{
-  z-index: 999 !important;
-}

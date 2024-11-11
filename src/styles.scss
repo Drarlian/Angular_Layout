@@ -12,6 +12,11 @@
   }
 }
 
+:root {
+  --primary-color: #00B0FF;
+  --secondary-color: white;
+}
+
 body{
   margin: 0;
   padding: 0;
@@ -79,9 +84,26 @@ h3,h1,h2 {
     height: 8px;
   }
   &::-webkit-scrollbar-track {
-      background: transparent;
+    background: transparent;
   }
   &::-webkit-scrollbar-thumb {
-      background: #AAA;
+    background: #AAA;
   }
+}
+
+// SOLUÇÃO ALTERNATIVA PARA O PROBLEMA NA SIDEBAR:
+.main-div{
+  z-index: 999 !important;
+}
+
+.shadow-div{
+  position: fixed;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+
+  background: rgba(0, 0, 0, 0.5);
+
+  z-index: 99;
 }

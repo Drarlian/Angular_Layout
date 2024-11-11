@@ -19,7 +19,7 @@
         // display: flex;
         // justify-content: center;
         // align-items: center;
-        border-radius: 50%;
+        // border-radius: 50%;
         overflow: hidden;
     }
 }
@@ -47,6 +47,6 @@
 }
 
 .custom-card ::ng-deep .p-card-title {
-  color: #00B0FF;
+  color: var(--primary-color);
   font-size: 1.8rem;
 }
