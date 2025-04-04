@@ -21,7 +21,6 @@ import { RippleModule } from 'primeng/ripple';
   imports: [CardModule, FormsModule, InputTextModule, FloatLabelModule, ButtonModule, CommonModule, ReactiveFormsModule, ToastModule, LoadingComponent, InputGroupModule, InputGroupAddonModule, ButtonThemeComponent, RippleModule],
   templateUrl: './signin.component.html',
   styleUrl: './signin.component.scss',
-  providers: [MessageService]
 })
 export class SigninComponent implements OnInit {
   private router = inject(Router);

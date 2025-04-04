@@ -30,6 +30,6 @@ export class ButtonThemeComponent implements OnInit {
   }
 
   toggleLightDark(){
-    this.themeService.toggleTheme();
+    this.themeService.toggleDarkMode();
   }
 }

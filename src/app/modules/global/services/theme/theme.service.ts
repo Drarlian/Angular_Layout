@@ -15,23 +15,25 @@ export class ThemeService {
     const localTheme = this.localStorage.getLocalStorage('THEME-BASIC-TEMPLATE');
 
     if (localTheme){
-      this.theme.next(localTheme.themePreference);
+      this.theme.next(localTheme);
 
-      const linkElement = document.getElementById('app-theme') as HTMLLinkElement;
-      linkElement.href = localTheme.themePreference + '.css';
+      const linkElement = document.querySelector('html');
+      if (linkElement !== null){
+        if (localTheme == 'dark'){
+          linkElement.classList.add('my-app-dark');
+        }
+      }
     }
   }
 
-  toggleTheme() {
-    const linkElement = document.getElementById('app-theme') as HTMLLinkElement;
+  toggleDarkMode() {
+    const element = document.querySelector('html');
+    if (element !== null){
+      element.classList.toggle('my-app-dark');
 
-    if (this.theme.value == 'dark') {
-      linkElement.href = 'light.css';
-      this.theme.next('light');
-    } else {
-      linkElement.href = 'dark.css';
-      this.theme.next('dark');
+      const themeValue = element.classList[0] != undefined ? 'dark' : 'light'
+      this.localStorage.setNormalLocalStorage('THEME-BASIC-TEMPLATE', themeValue);
+      this.theme.next(themeValue);
     }
-    this.localStorage.setLocalStorage('THEME-BASIC-TEMPLATE', {themePreference: this.theme.value}, false);
   }
 }

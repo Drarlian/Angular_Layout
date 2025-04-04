@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, inject } from '@angular/core';
-import { Sidebar, SidebarModule } from 'primeng/sidebar';
+import { DrawerModule, Drawer } from 'primeng/drawer';
 import { ButtonModule } from 'primeng/button';
 import { RippleModule } from 'primeng/ripple';
 import { AvatarModule } from 'primeng/avatar';
@@ -13,7 +13,7 @@ import { ButtonThemeComponent } from '../button-theme/button-theme.component';
 @Component({
   selector: 'app-sidebar',
   standalone: true,
-  imports: [SidebarModule, ButtonModule, RippleModule, AvatarModule, StyleClassModule, CommonModule, ButtonThemeComponent],
+  imports: [DrawerModule, ButtonModule, RippleModule, AvatarModule, StyleClassModule, CommonModule, ButtonThemeComponent],
   templateUrl: './sidebar.component.html',
   styleUrl: './sidebar.component.scss'
 })
@@ -23,7 +23,7 @@ export class SidebarComponent implements OnInit {
 
   userData!: ISigninResponse | null;
 
-  @ViewChild('sidebarRef') sidebarRef!: Sidebar;
+  @ViewChild('sidebarRef') sidebarRef!: Drawer;
 
   closeCallback(e:any): void {
     this.sidebarRef.close(e);

@@ -1,6 +1,5 @@
-@import "primeng/resources/primeng.css";
 @import "primeicons/primeicons.css";
-@import "primeflex/primeflex.css";
+@import 'fonts/fonts.css';
 
 @layer reset, primeng;
 
@@ -21,6 +20,8 @@ body{
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  
+  font-family: 'Poppins', sans-serif;
 }
 
 .grid {
@@ -91,7 +92,6 @@ h3,h1,h2 {
   }
 }
 
-// SOLUÇÃO ALTERNATIVA PARA O PROBLEMA NA SIDEBAR:
 .main-div{
   z-index: 999 !important;
 }

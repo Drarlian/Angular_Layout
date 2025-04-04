@@ -1,4 +1,12 @@
-::ng-deep .p-togglebutton .pi-moon,
-::ng-deep .p-togglebutton .pi-sun {
+:host ::ng-deep .p-togglebutton .pi-moon,
+:host ::ng-deep .p-togglebutton .pi-sun {
     color: var(--secondary-color); /* Cor do ícone para o estado "Dark" */
+    --p-togglebutton-icon-hover-color: var(--secondary-color);
+}
+
+:host ::ng-deep .p-togglebutton, 
+:host ::ng-deep .p-togglebutton-checked,
+:host ::ng-deep .p-togglebutton-checked::before {
+    background-color: var(--primary-color) !important;
+    color: var(--secondary-color) !important;
 }

@@ -50,3 +50,9 @@
   color: var(--primary-color);
   font-size: 1.8rem;
 }
+
+:host ::ng-deep .p-button {
+    background-color: var(--primary-color);
+    color: var(--secondary-color);
+    border-color: var(--primary-color);
+}

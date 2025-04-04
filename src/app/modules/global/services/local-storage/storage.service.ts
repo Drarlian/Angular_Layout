@@ -31,6 +31,11 @@ export class StorageService {
     }
   }
 
+  setNormalLocalStorage(key: string, informations: any){
+    const newInformations = JSON.stringify(informations);
+    localStorage.setItem(key, newInformations);
+  }
+
   getLocalStorage(key: string){
     const informations = localStorage.getItem(key);
     if (informations){

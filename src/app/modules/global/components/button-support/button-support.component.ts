@@ -6,7 +6,7 @@ import { CardModule } from 'primeng/card';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { FloatLabelModule } from 'primeng/floatlabel';
-import { InputTextareaModule } from 'primeng/inputtextarea';
+import { TextareaModule } from 'primeng/textarea';
 import { HttpClient } from '@angular/common/http';
 import { MessageService } from 'primeng/api';
 import { LoadingComponent } from '../loading/loading.component';
@@ -14,7 +14,7 @@ import { LoadingComponent } from '../loading/loading.component';
 @Component({
   selector: 'app-button-support',
   standalone: true,
-  imports: [ButtonModule, InputTextModule, CardModule, CommonModule, FormsModule, InputTextModule, FloatLabelModule, InputTextareaModule, LoadingComponent],
+  imports: [ButtonModule, InputTextModule, CardModule, CommonModule, FormsModule, InputTextModule, FloatLabelModule, TextareaModule, LoadingComponent],
   templateUrl: './button-support.component.html',
   styleUrl: './button-support.component.scss'
 })
