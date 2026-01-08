@@ -4,18 +4,20 @@ export interface ISigninRequest {
 }
 
 export interface ISigninResponse {
+  message: string,
+  data: ISigninData
+}
+
+export interface ISigninData {
   user: {
-    collaboratorId: number,
-    name: string,
-    lastName: string,
-    email: string,
-    sectors: string[],
-    access: IAccess,
-    systems: string[],
-    teams: string[]
-  },
-  authorities: string[],
-  token: string
+    accessId: number;
+    email: string;
+    username: string;
+    firstName: string;
+    lastName: string;
+    active: boolean;
+    roles: string[];
+  }
 }
 
 interface IAccess {

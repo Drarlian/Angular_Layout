@@ -119,7 +119,7 @@ export class ForgetPasswordComponent implements OnInit {
       if (this.forgetPasswordNewPasswordForm.value.newPassword && this.forgetPasswordNewPasswordForm.value.passwordConfirm && this.userForgetPasswordId){
         this.isLoading = true;
 
-        const validation = await this.usersServices.editPasswordWithOutOldPassword({...this.forgetPasswordNewPasswordForm.value}, this.userForgetPasswordId);
+        const validation = await this.usersServices.editPasswordWithOutOldPassword(this.userForgetPasswordId, {...this.forgetPasswordNewPasswordForm.value});
 
         this.isLoading = false;
 

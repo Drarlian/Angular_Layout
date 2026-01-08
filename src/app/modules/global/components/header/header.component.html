@@ -13,8 +13,8 @@
         </div>
         <div class="flex align-items-center justify-content-center gap-2">
           <div class="flex flex-column">
-            <h3 class="font-medium">{{userData?.user?.name}} {{userData?.user?.lastName}}</h3>
-            <span class="text-sm" [ngStyle]="{color: 'var(--primary-color)'}" class="font-semibold">{{userData?.user?.access?.role}}</span>
+            <h3 class="font-medium">{{userData?.user?.firstName}} {{userData?.user?.lastName}}</h3>
+            <span class="text-sm" [ngStyle]="{color: 'var(--primary-color)'}" class="font-semibold">{{getUserRole(userData?.user?.roles)}}</span>
           </div>
 
         <p-avatar

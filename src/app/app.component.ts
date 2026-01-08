@@ -16,7 +16,7 @@ import { NotificationDialogComponent } from './modules/global/components/notific
   styleUrl: './app.component.scss'
 })
 export class AppComponent {
-  title = 'angular-test-camp';
+  title = 'angular-layout';
 
   constructor(private primeng: PrimeNG, private themeService: ThemeService, usersService: UsersService, private notificationsService: NotificationsService) {}
 

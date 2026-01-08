@@ -1,179 +1,97 @@
-<div class="shadow-div" [ngStyle]="{'display': sidebarVisible ? 'inline': 'none', 'opacity': sidebarVisible ? '1': '0'}" (click)="closeShadow()"></div>
+<div class="shadow-div" [ngStyle]="{'display': sidebarVisible ? 'inline': 'none', 'opacity': sidebarVisible ? '1': '0'}" (click)="customClose()"></div>
 <div class="main-div">
   <p-drawer  #sidebarRef [(visible)]="sidebarVisible" [modal]=false>
     <ng-template pTemplate="headless">
       <div class="flex flex-column h-full">
         <div class="flex align-items-center justify-content-between px-4 pt-3 flex-shrink-0">
           <span class="inline-flex align-items-center gap-2">
-            <!-- <img src="../../../assets/images/bg-logo.png" class="logo-img" /> -->
+            <!-- <img src="../../../assets/images/logo.png" class="logo-img" /> -->
             <span class="text-2xl font-medium" [ngStyle]="{color: 'var(--primary-color)'}">NOME EMPRESA</span>
           </span>
           <span class="close-icon">
-            <button type="button" (click)="closeCallback($event)">
+            <button type="button" (click)="customClose()">
             <i class="pi pi-times" [ngStyle]="{color: 'var(--green-50)'}"></i>
             </button>
           </span>
         </div>
         <div class="overflow-y-auto">
-          <ul class="list-none p-3 m-0">
-            <li>
-              <div
-                pRipple
-                pStyleClass="@next"
-                enterClass="hidden"
-                enterActiveClass="slidedown"
-                leaveToClass="hidden"
-                leaveActiveClass="slideup"
-                class="p-3 flex align-items-center justify-content-between text-600 cursor-pointer p-ripple"
-              >
-                <span class="font-medium">PARTE 1</span>
-                <i class="pi pi-chevron-down"></i>
-              </div>
-              <ul class="list-none p-0 m-0 overflow-hidden">
+          @for (route of availableRoutes; track route.label){
+            @if (canAccessRoute(route.rolesCanAccess)) {
+              <ul class="list-none p-3 m-0">
                 <li>
-                  <a (click)="navigateTo('/home')" pRipple class="flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-100 transition-duration-150 transition-colors p-ripple">
-                    <i class="pi pi-home mr-2"></i>
-                    <span class="font-medium">Home</span>
-                  </a>
-                </li>
-                <li>
-                  <a (click)="navigateTo('/main')" pRipple class="flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-100 transition-duration-150 transition-colors p-ripple">
-                    <i class="pi pi-calendar mr-2"></i>
-                    <span class="font-medium">Principal</span>
-                  </a>
-                </li>
-                <!-- <li>
-                  <a (click)="navigateTo('/ocorrencias')" pRipple class="flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-100 transition-duration-150 transition-colors p-ripple">
-                    <i class="pi pi-users mr-2"></i>
-                    <span class="font-medium">Ocorrências</span>
-                  </a>
-                </li> -->
-                <!-- <li>
-                  <a (click)="navigateTo('/shipping')" pRipple class="flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-100 transition-duration-150 transition-colors p-ripple">
-                    <i class="pi pi-fw pi-truck mr-2"></i>
-                    <span class="font-medium">Transportadoras</span>
-                  </a>
-                </li> -->
-                <!-- <li>
-                  <a
+                  <div
                     pRipple
                     pStyleClass="@next"
                     enterClass="hidden"
                     enterActiveClass="slidedown"
                     leaveToClass="hidden"
                     leaveActiveClass="slideup"
-                    class="flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-100 transition-duration-150 transition-colors p-ripple"
+                    class="p-3 flex align-items-center justify-content-between text-600 cursor-pointer p-ripple"
                   >
-                    <i class="pi pi-fw pi-truck mr-2 mr-2"></i>
-                    <span class="font-medium">TESTE</span>
-                    <i class="pi pi-chevron-down ml-auto"></i>
-                  </a>
-                  <ul class="list-none py-0 pl-3 pr-0 m-0 hidden overflow-y-hidden transition-all transition-duration-400 transition-ease-in-out">
-                    <li>
-                      <a (click)="navigateToWithQuery('/teste1', 'Transportadoras')" pRipple class="flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-100 transition-duration-150 transition-colors p-ripple">
-                        <i class="pi pi-eye mr-2"></i>
-                        <span class="font-medium">TESTE1</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a (click)="navigateToWithQuery('/teste2', 'Cadastrar')" pRipple class="flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-100 transition-duration-150 transition-colors p-ripple">
-                        <i class="pi pi-plus mr-2"></i>
-                        <span class="font-medium">TESTE2</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a (click)="navigateToWithQuery('/teste3', 'Regras')" pRipple class="flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-100 transition-duration-150 transition-colors p-ripple">
-                        <i class="pi pi-plus mr-2"></i>
-                        <span class="font-medium">TESTE3</span>
-                      </a>
-                    </li>
-                  </ul>
-                </li> -->
-                <li>
-                  <a (click)="navigateTo('/view-users')" pRipple class="flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-100 transition-duration-150 transition-colors p-ripple">
-                    <i class="pi pi-user mr-2"></i>
-                    <span class="font-medium">Usuários</span>
-                  </a>
-                </li>
-                <li>
-                  <a (click)="navigateTo('/settings')" pRipple class="flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-100 transition-duration-150 transition-colors p-ripple">
-                    <i class="pi pi-cog mr-2"></i>
-                    <span class="font-medium">Configurações</span>
-                  </a>
-                </li>
-              </ul>
-            </li>
-          </ul>
-          <ul class="list-none p-3 m-0">
-            <li>
-              <div
-                pRipple
-                pStyleClass="@next"
-                enterClass="hidden"
-                enterActiveClass="slidedown"
-                leaveToClass="hidden"
-                leaveActiveClass="slideup"
-                class="p-3 flex align-items-center justify-content-between text-600 cursor-pointer p-ripple"
-              >
-                <span class="font-medium">PARTE 2</span>
-                <i class="pi pi-chevron-down"></i>
-              </div>
-              <ul class="list-none p-0 m-0 overflow-hidden">
-                <li>
-                  <a
-                    pRipple
-                    pStyleClass="@next"
-                    enterClass="hidden"
-                    enterActiveClass="slidedown"
-                    leaveToClass="hidden"
-                    leaveActiveClass="slideup"
-                    class="flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-100 transition-duration-150 transition-colors p-ripple"
-                  >
-                    <i class="pi pi-fw pi-folder mr-2 mr-2"></i>
-                    <span class="font-medium">Arquivos</span>
-                    <i class="pi pi-chevron-down ml-auto"></i>
-                  </a>
-                  <ul class="list-none py-0 pl-3 pr-0 m-0 hidden overflow-y-hidden transition-all transition-duration-400 transition-ease-in-out">
-                    <li>
-                      <a (click)="navigateToWithQuery('/file', 'view')" pRipple class="flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-100 transition-duration-150 transition-colors p-ripple">
-                        <i class="pi pi-eye mr-2"></i>
-                        <span class="font-medium">Visualização</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a (click)="navigateToWithQuery('/file', 'add')" pRipple class="flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-100 transition-duration-150 transition-colors p-ripple">
-                        <i class="pi pi-plus mr-2"></i>
-                        <span class="font-medium">Cadastro</span>
-                      </a>
-                    </li>
+                    <span class="font-medium">{{ route.label }}</span>
+                    <i class="pi pi-chevron-down"></i>
+                  </div>
+                  <ul class="list-none p-0 m-0 overflow-hidden" [ngClass]="{'hidden': route.hidden}">
+                    @for (childrenRoute of route.routes; track childrenRoute.label){
+                      @if (canAccess(childrenRoute.rolesCanAccess)) {
+                        @if (childrenRoute.routes.length > 0){
+                          <li>
+                            <a
+                              pRipple
+                              pStyleClass="@next"
+                              enterClass="hidden"
+                              enterActiveClass="slidedown"
+                              leaveToClass="hidden"
+                              leaveActiveClass="slideup"
+                              class="flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-100 transition-duration-150 transition-colors p-ripple"
+                            >
+                              <i [class]="childrenRoute.class"></i>
+                              <span class="font-medium">{{ childrenRoute.label }}</span>
+                              <i class="pi pi-chevron-down ml-auto"></i>
+                            </a>
+                            <ul class="list-none py-0 pl-3 pr-0 m-0 hidden overflow-y-hidden transition-all transition-duration-400 transition-ease-in-out">
+                              @for (grandchildRoute of childrenRoute.routes; track grandchildRoute.label){
+                                <li>
+                                  @if (grandchildRoute.routeQuery.length > 0){
+                                    <a (click)="navigateToWithQuery(grandchildRoute.routeQuery[0], grandchildRoute.routeQuery[1])" pRipple class="flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-100 transition-duration-150 transition-colors p-ripple">
+                                        <i [class]="grandchildRoute.class"></i>
+                                      <span class="font-medium">{{ grandchildRoute.label }}</span>
+                                    </a>
+                                  }@else {
+                                    <a (click)="navigateTo(childrenRoute.route)" pRipple class="flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-100 transition-duration-150 transition-colors p-ripple">
+                                      <i [class]="grandchildRoute.class"></i>
+                                      <span class="font-medium">{{ grandchildRoute.label }}</span>
+                                    </a>
+                                  }
+                                </li>
+                              }
+                            </ul>
+                          </li>
+                        } @else {
+                          <li>
+                            <a (click)="childrenRoute.route ? navigateTo(childrenRoute.route) : navigateToWithQuery(childrenRoute.routeQuery[0], childrenRoute.routeQuery[1])" pRipple class="flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-100 transition-duration-150 transition-colors p-ripple">
+                              <i [class]="childrenRoute.class"></i>
+                              <span class="font-medium">{{ childrenRoute.label }}</span>
+                            </a>
+                          </li>
+                        }
+                      }
+                    }
                   </ul>
                 </li>
-                <li>
-                  <a pRipple class="flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-100 transition-duration-150 transition-colors p-ripple">
-                    <i class="pi pi-chart-bar mr-2"></i>
-                    <span class="font-medium">Performance</span>
-                  </a>
-                </li>
-                <li>
-                  <a pRipple class="flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-100 transition-duration-150 transition-colors p-ripple">
-                    <i class="pi pi-cog mr-2"></i>
-                    <span class="font-medium">Configurações</span>
-                  </a>
-                </li>
               </ul>
-            </li>
-          </ul>
+            }
+          }
         </div>
         <div class="mt-auto">
           <hr class="mb-3 mx-3 border-top-1 border-none surface-border" />
           <a (click)="navigateTo('settings')" pRipple class="m-3 flex align-items-center cursor-pointer p-3 gap-2 border-round text-700 hover:surface-100 transition-duration-150 transition-colors p-ripple">
-            <!-- <p-avatar image={{userData?.user?.avatar}} shape="circle" /> -->
-            <p-avatar image='https://avatars.githubusercontent.com/u/42438006?v=4' shape="circle" />
-            <span class="font-bold">{{userData?.user?.name}} {{userData?.user?.lastName}}</span>
+            <p-avatar [image]="`https://ui-avatars.com/api/?name=${userData?.user?.firstName}+${userData?.user?.lastName}&background=0E574E&color=FFF&size=128&bold=true`" shape="circle" />
+            <span class="font-bold">{{userData?.user?.firstName}} {{userData?.user?.lastName}}</span>
           </a>
           <div class="container-bottom">
             <app-button-theme></app-button-theme>
-            <button (click)="logOut()"><i class="pi pi-sign-out" style="font-size: 1.2rem"></i></button>
+            <button (click)="logout()"><i class="pi pi-sign-out" style="font-size: 1.2rem"></i></button>
           </div>
         </div>
       </div>

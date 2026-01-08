@@ -7,7 +7,7 @@ import { MenuItem } from 'primeng/api';
 import { SidebarComponent } from '../sidebar/sidebar.component';
 import {AvatarModule} from 'primeng/avatar';
 import {AvatarGroupModule} from 'primeng/avatargroup';
-import { ISigninResponse } from '../../interfaces/ISignin';
+import { ISigninData } from '../../interfaces/ISignin';
 import { UsersService } from '../../services/users/users.service';
 import { CommonModule } from '@angular/common';
 import { NotificationsService } from '../../services/notifications/notifications.service';
@@ -25,7 +25,7 @@ export class HeaderComponent {
   notificationsService = inject(NotificationsService);
 
   items: MenuItem[] | undefined;
-  userData!: ISigninResponse | null;
+  userData!: ISigninData | null;
 
   ngOnInit() {
       this.items = [
@@ -39,12 +39,20 @@ export class HeaderComponent {
           }
       ];
 
-      this.usersService.userInformations.subscribe((data) => {
+      this.usersService.user$.subscribe((data) => {
         this.userData = data;
       })
   }
 
   openNotification(){
     this.notificationsService.toggleVisibility();
+  }
+
+  getUserRole(roles: string[] | undefined) {
+    if (roles) {
+      return roles[0]
+    } else {
+      return 'SEM CARGO'
+    }
   }
 }

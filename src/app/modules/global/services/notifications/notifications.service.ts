@@ -17,7 +17,7 @@ export class NotificationsService {
     // A notificação aparece apenas se o usuário estiver logado.
 
     // COMENTADO ENQUANTO A NOTIFICAÇÃO NÃO PRECISA APARECER.
-    // this.usersService.userInformations.subscribe((data) => {
+    // this.usersService.user$.subscribe((data) => {
     //   if(data){
     //     if(!this.cookieService.get('notification')){
     //       this.visible.next(true);

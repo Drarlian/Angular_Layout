@@ -1,29 +1,22 @@
 import { inject, Injectable } from '@angular/core';
-import { ISigninRequest, ISigninResponse } from '../../interfaces/ISignin';
+import { ISigninData, ISigninRequest, ISigninResponse } from '../../interfaces/ISignin';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { MessageService } from 'primeng/api';
 import { StorageService } from '../local-storage/storage.service';
 import { BehaviorSubject } from 'rxjs';
 import { IUser } from '../../interfaces/IUser';
+import { Router } from '@angular/router';
 
-const mockUser: ISigninResponse = {
+const mockUser: ISigninData = {
   user: {
-    collaboratorId: 1,
-    name: 'Renato',
-    lastName: 'Tester',
+    accessId: 1,
     email: 'renato@teste.com.br',
-    sectors: ['SETOR1', 'SETOR2'],
-    access: {
-      accessId: 1,
-      username: 'renato.tester',
-      password: 'dfsjbosidhfgsdhfbgisdfg',
-      role: 'TESTER'
-    },
-    systems: ['SISTEMA1', 'SISTEMA2'],
-    teams: ['TIME1', 'TIME2']
-  },
-  authorities: ['AUTORIDADE1', 'AUTORIDADE2'],
-  token: 'SDJFBISAJUDBFIUSHDCNSAHDNJSDFBNOAUWREBFEHRBHBDFHSJB'
+    username: 'renato.tester',
+    firstName: 'Renato',
+    lastName: 'Tester',
+    active: true,
+    roles: ['ADMIN']
+  }
 }
 
 @Injectable({
@@ -33,129 +26,115 @@ export class UsersService {
   private http = inject(HttpClient);
   private messageService = inject(MessageService);
   private localStorageService = inject(StorageService);
+  private router = inject(Router);
 
-  private user = new BehaviorSubject<ISigninResponse | null>(null);
-  userInformations = this.user.asObservable();
+  endpoint: string = '';
 
-  constructor() {
-    const localUser = this.localStorageService.getLocalStorage('USER-BASIC-TEMPLATE');
+  private userSubject = new BehaviorSubject<ISigninData | null>(null);
+  user$ = this.userSubject.asObservable();
 
-    if (localUser){
-      this.user.next(localUser);
-    }
+  constructor() { }
+
+  getTokenAuthorization() {
+    const token = '';
+
+    return new HttpHeaders({
+      'Content-type':  'application/json',
+      'Authorization' : `Bearer ${token}`
+    })
   }
 
-  signin(informations: ISigninRequest){
-    if (informations.username == 'admin' && informations.password == 'admin'){
-      this.user.next(mockUser)
+  get currentUser(): any | null {
+    return this.userSubject.value;
+  }
+
+  async rehydrateSession() {
+    const response = await this.getUserData();
+    return response;
+  }
+  
+  getUserData() {
+    return new Promise<boolean>((resolve, _) => {
+      this.http.get<any>(`${this.endpoint}/me`, { withCredentials: true }).subscribe({
+        next: (data) => {
+          this.userSubject.next(data.data);
+          resolve(true);
+        }, error: (error: any) => {
+          resolve(false);
+        }
+      })
+    })
+  }
+
+  signin(data: ISigninRequest){
+    // Temp Login:
+    if (data.username == 'admin' && data.password == 'admin'){
+      this.userSubject.next(mockUser)
       this.localStorageService.setLocalStorage('USER-BASIC-TEMPLATE', mockUser, false, false);
       return true
     }
 
-    return new Promise<boolean>((resolve, _) => {this.http.post<ISigninResponse>('', informations).subscribe({
+    return new Promise<boolean>((resolve, _) => {this.http.post<ISigninResponse>(`${this.endpoint}/login`, data, { withCredentials: true }).subscribe({
       next: (data) => {
-        this.user.next(data);
-        this.localStorageService.setLocalStorage('USER-BASIC-TEMPLATE', data, false, false);
+        this.userSubject.next(data.data);
         resolve(true);
       },
       error: (error: any) => {
-        console.log(error)
-        this.messageService.add({severity: 'error', summary: 'Login Inválido', detail: 'Impossível realizar o login!'})
+        this.messageService.add({severity: 'error', summary: 'Erro ao realizar o login!', detail: error.error.detail })
         resolve(false);
       }
     })})
   }
 
-  logout(){
-    this.localStorageService.deleteLocalStorage('USER-BASIC-TEMPLATE');
-    window.location.reload();
-  }
-
-  redirectUser(){
-    // Essa abordagem garante que a mensagem de login seja enviada apenas quando o site receptor estiver pronto,
-    // tornando o sistema mais robusto e menos dependente de temporizadores arbitrários.
-
-    // A função redirectUser abre uma nova janela e espera uma mensagem 'ready' dessa nova janela.
-
-    // Quando a mensagem 'ready' é recebida, a função envia o valor do usuário para a nova janela e então remove o listener para evitar futuras execuções desnecessárias.
-    // A função receiveReadyMessage não roda em loop, mas sim é chamada toda vez que a janela principal recebe uma mensagem e é removida após a primeira execução bem-sucedida.
-
-    if (this.user.value) {
-      const targetWindow = window.open('http://localhost:55014/home', '_blank');
-      if (targetWindow) {
-        const receiveReadyMessage = (event: MessageEvent) => {
-          if (event.origin === 'http://localhost:55014' && event.data === 'ready') {
-            targetWindow.postMessage(this.user.value, 'http://localhost:55014');
-            window.removeEventListener('message', receiveReadyMessage);
-          }
-        };
-        window.addEventListener('message', receiveReadyMessage);
+  logout() {
+    return new Promise<boolean>((resolve, _) => {this.http.post(`${this.endpoint}/auth/logout`, {}, { withCredentials: true }).subscribe({
+      next: (_) => {
+        this.userSubject.next(null);
+        this.router.navigate(["/signin"]);
+        resolve(true);
+      }, error: (error: any) => {
+        this.messageService.add({severity: 'error', summary: 'Login Inválido', detail: error.error.detail});
+        resolve(false);
       }
-    }
-  }
-
-
-  // METODOS ESPECIFICOS:
-  getTokenAuthorization() {
-    return new HttpHeaders({
-      'Content-type':  'application/json',
-      'Authorization' : this.user.value?.token ? this.user.value?.token: ''
-    })
+    })});
   }
 
   findAllUsers(){
-    const headers = this.getTokenAuthorization();
-
-    return new Promise<IUser[] | []>((resolve, _) => {this.http.get<IUser[]>('', { headers }).subscribe({
+    return new Promise<IUser[] | []>((resolve, _) => {this.http.get<IUser[]>(`${this.endpoint}`, { withCredentials: true }).subscribe({
       next: (data) => {
         if (data){
-          // this.allUsers.next(data);
           resolve(data);
         } else{
-          // this.allUsers.next([]);
           resolve([]);
         }
       },
       error: (error: any) => {
-        // this.allUsers.next([]);
+        this.messageService.add({severity: 'error', summary: 'Erro ao procurar pelos usuários!', detail: error.error.detail});
         resolve([]);
       }
-    })})
+    })});
   }
 
-  findOneUser(id: number){
-    const headers = this.getTokenAuthorization()
-
-    return new Promise<IUser | null>((resolve, _) => {this.http.get<IUser>(``, { headers }).subscribe({
+  findOneUser(userId: number){
+    return new Promise<IUser | null>((resolve, _) => {this.http.get<IUser>(`${this.endpoint}/${userId}`, { withCredentials: true }).subscribe({
       next: (data) => {
         if (data){
-          // this.allUsers.next(data);
           resolve(data);
         } else{
-          // this.allUsers.next([]);
           resolve(null);
         }
       },
       error: (error: any) => {
-        // this.allUsers.next([]);
+        this.messageService.add({severity: 'error', summary: 'Erro ao procurar pelo ususuário!', detail: error.error.detail});
         resolve(null);
       }
-    })})
+    })});
   }
 
-  // Own/Target Information
-  editUserBasic(id: number, informations: any, ownInformation: boolean = true){
-    const headers = this.getTokenAuthorization()
-
-    return new Promise<boolean>((resolve, _) => {this.http.patch<any>(``, informations, { headers }).subscribe({
+  editUserAdmin(userId: number, data: any){
+    return new Promise<boolean>((resolve, _) => {this.http.patch<any>(`${this.endpoint}/${userId}`, data, { withCredentials: true }).subscribe({
       next: (data) => {
-        // Alterando as informações do usuário atual (user) e mantendo o token que ele já tinha.
         if (data){
-          if (ownInformation){
-            const token = this.user.value?.token ? this.user.value?.token : '';
-            // this.user.next({user: data, token: token});  // -> ATUALIZAR OS DADOS DO USUARIO.
-            this.localStorageService.setLocalStorage('USER-BASIC-TEMPLATE', {user: data, token: token}, true, false);
-          }
           this.messageService.add({severity: 'success', summary: 'Dados Alterados!', detail: 'As informações foram alteradas com sucesso.'});
           resolve(true);
         } else{
@@ -164,36 +143,24 @@ export class UsersService {
         }
       },
       error: (error: any) => {
-        this.messageService.add({severity: 'error', summary: 'Erro ao Alterar os Dados!', detail: 'Houve um erro ao alterar as informações.'});
+        this.messageService.add({severity: 'error', summary: 'Erro ao Alterar os Dados!', detail: error.error.detail});
         resolve(false);
       }
-    })})
+    })});
   }
 
-  // Own/Target Information
-  editUserAdvanced(id: number, informations: any, ownInformation: boolean){
-    const headers = this.getTokenAuthorization();
-
-    return new Promise<boolean>((resolve, _) => {this.http.patch<any>(``, informations, { headers }).subscribe({
-      next: (data) => {
+  async editUserAuto(data: any){
+    return new Promise<boolean>((resolve, _) => {this.http.patch<any>(`${this.endpoint}`, data, { withCredentials: true }).subscribe({
+      next: async (data) => {
         if (data){
-          // TO DO: Após alterar os dados avançados do usário eu devo deslogar ele do sistema, mas antes disso eu devo avisar a ele atraves de um PopUp que ele será deslogado se confirmar a troca das informações.
-          // (Isso vai acontecer apenas no editUserAdvanced pois o token é regerado ao fazer essa atualização)
-
-          // Alterando as informações do usuário atual (user) e mantendo o token que ele já tinha.
-          const token = this.user.value?.token ? this.user.value?.token : '';
-
-          let newUser: ISigninResponse | null = this.user.value;
-          if (newUser){
-            if(ownInformation){
-              // newUser = {user: {...newUser?.user, access: {...newUser?.user.access, id: data.id, username: data.username, password: data.password, role: data.role}}, token: token};
-              // ATUALIZAR INFORMAÇÕES DO USUÁRIO.
-
-              this.user.next(newUser);
-              this.localStorageService.setLocalStorage('USER-BASIC-TEMPLATE', newUser, true);
-            }
+          const response = await this.rehydrateSession();
+          if (typeof(response) == 'object'){
+            this.userSubject.next(response);
             this.messageService.add({severity: 'success', summary: 'Dados Alterados!', detail: 'As informações foram alteradas com sucesso.'});
             resolve(true);
+          } else {
+            this.messageService.add({severity: 'error', summary: 'Erro Interno!', detail: 'Houve um erro interno ao alterar as informações.'});
+            resolve(false);
           }
         } else{
           this.messageService.add({severity: 'error', summary: 'Erro Interno!', detail: 'Houve um erro interno ao alterar as informações.'});
@@ -201,17 +168,14 @@ export class UsersService {
         }
       },
       error: (error: any) => {
-        this.messageService.add({severity: 'error', summary: 'Erro ao Alterar os Dados!', detail: 'Houve um erro ao alterar as informações.'});
+        this.messageService.add({severity: 'error', summary: 'Erro ao Alterar os Dados!', detail: error.error.detail});
         resolve(false);
       }
-    })})
+    })});
   }
 
-  // Own Information
-  editPasswordWithOldPassword(id: number, informations: any){
-    const headers = this.getTokenAuthorization();
-
-    return new Promise<boolean>((resolve, _) => {this.http.patch<any>(``, informations, { headers }).subscribe({
+  editPasswordWithOldPassword(data: any){
+    return new Promise<boolean>((resolve, _) => {this.http.patch<any>(`${this.endpoint}`, data, { withCredentials: true }).subscribe({
       next: (data) => {
         if (data.message){
           this.messageService.add({severity: 'success', summary: 'Senha Alterada!', detail: data.message});
@@ -222,16 +186,14 @@ export class UsersService {
         }
       },
       error: (error: any) => {
-        this.messageService.add({severity: 'error', summary: 'Erro ao Alterar a Senha!', detail: error.error.message});
+        this.messageService.add({severity: 'error', summary: 'Erro ao Alterar a Senha!', detail: error.error.detail});
         resolve(false);
       }
-    })})
+    })});
   }
 
-  createUser(informations: any){
-    const headers = this.getTokenAuthorization()
-
-    return new Promise<boolean>((resolve, _) => {this.http.post<any>('', informations, { headers }).subscribe({
+  createUser(data: any){
+    return new Promise<boolean>((resolve, _) => {this.http.post<any>(`${this.endpoint}`, data, { withCredentials: true }).subscribe({
       next: (data: any) => {
         if (data?.message){
           this.messageService.add({severity: 'success', summary: 'Usuário Criado!', detail: 'O usuário foi criado com sucesso!'});
@@ -242,16 +204,14 @@ export class UsersService {
         }
       },
       error: (error: any) => {
-        this.messageService.add({severity: 'error', summary: 'Erro ao Criar o Usuário!', detail: 'Houve um erro ao criar o usuário.'});
+        this.messageService.add({severity: 'error', summary: 'Erro ao Criar o Usuário!', detail: error.error.detail});
         resolve(false);
       }
-    })})
+    })});
   }
 
-  deleteUser(id: number){
-    const headers = this.getTokenAuthorization()
-
-    return new Promise<boolean>((resolve, _) => {this.http.delete(``, { headers }).subscribe({
+  deleteUser(userId: number){
+    return new Promise<boolean>((resolve, _) => {this.http.delete(`${this.endpoint}/${userId}`, { withCredentials: true }).subscribe({
       next: (data: any) => {
         if (data?.message){
           this.messageService.add({severity: 'success', summary: 'Usuário Excluido!', detail: 'O usuário foi excluído com sucesso!'});
@@ -262,14 +222,14 @@ export class UsersService {
         }
       },
       error: (error: any) => {
-        this.messageService.add({severity: 'error', summary: 'Erro ao Excluir o Usuário!', detail: 'Houve um erro ao excluir o usuário.'});
+        this.messageService.add({severity: 'error', summary: 'Erro ao Excluir o Usuário!', detail: error.error.detail});
         resolve(false);
       }
-    })})
+    })});
   }
 
-  sendEmailForgetPassword(informations: any){
-    return new Promise<any | boolean>((resolve, _) => {this.http.post<any>('', informations).subscribe({
+  sendEmailForgetPassword(data: any){
+    return new Promise<any | boolean>((resolve, _) => {this.http.post<any>(`${this.endpoint}`, data).subscribe({
       next: (data) => {
         if (data && data?.message){
           this.messageService.add({severity: 'success', summary: 'E-mail Enviado!', detail: data.message});
@@ -280,14 +240,14 @@ export class UsersService {
         }
       },
       error: (error: any) => {
-        this.messageService.add({severity: 'error', summary: 'Erro ao Enviar o E-mail!', detail: 'Ocorreu um erro ao tentar enviar o E-mail de recuperação.'});
+        this.messageService.add({severity: 'error', summary: 'Erro ao Enviar o E-mail!', detail: error.error.detail});
         resolve(false);
       }
-    })})
+    })});
   }
 
-  validateHashCode(informations: any){
-    return new Promise<boolean>((resolve, _) => {this.http.post<any>('', informations).subscribe({
+  validateHashCode(data: any){
+    return new Promise<boolean>((resolve, _) => {this.http.post<any>(`${this.endpoint}`, data).subscribe({
       next: (data) => {
         if (data && data?.userId){
           this.messageService.add({severity: 'success', summary: 'Código Validado!', detail: 'Código de confirmação validado.'});
@@ -298,14 +258,14 @@ export class UsersService {
         }
       },
       error: (error: any) => {
-        this.messageService.add({severity: 'error', summary: 'Código Inválido!', detail: 'O código de confirmação informado é inválido ou esta expirado.'});
+        this.messageService.add({severity: 'error', summary: 'Código Inválido!', detail: error.error.detail});
         resolve(false);
       }
-    })})
+    })});
   }
 
-  editPasswordWithOutOldPassword(informations: any, id: string){
-    return new Promise<boolean>((resolve, _) => {this.http.patch<any>(``, informations).subscribe({
+  editPasswordWithOutOldPassword(userId: string, data: any){
+    return new Promise<boolean>((resolve, _) => {this.http.patch<any>(`${this.endpoint}/${userId}`, data).subscribe({
       next: (data) => {
         if (data && data?.message){
           this.messageService.add({severity: 'success', summary: 'Senha Alterada com Sucesso!', detail: 'A senha foi modificada com sucesso.'});
@@ -316,9 +276,9 @@ export class UsersService {
         }
       },
       error: (error: any) => {
-        this.messageService.add({severity: 'error', summary: 'Erro ao Alterar a Senha!', detail: 'Ocorreu um erro durante a alteração da senha.'});
+        this.messageService.add({severity: 'error', summary: 'Erro ao Alterar a Senha!', detail: error.error.detail});
         resolve(false);
       }
-    })})
+    })});
   }
 }
